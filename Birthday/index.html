@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Happy Birthday Bestie! 🎉</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: "Arial", sans-serif;
+      }
+
+      body {
+        background: linear-gradient(135deg, #ff9a9e 0%, #fad0c4 100%);
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        overflow-x: hidden;
+        position: relative;
+      }
+
+      .container {
+        width: 90%;
+        max-width: 600px;
+        text-align: center;
+        padding: 30px 20px;
+        margin-top: 30px;
+        position: relative;
+        z-index: 1;
+      }
+
+      h1 {
+        font-size: 2.5rem;
+        color: #333;
+        margin-bottom: 15px;
+        text-shadow: 2px 2px 4px rgba(255, 255, 255, 0.5);
+      }
+
+      p {
+        font-size: 1.2rem;
+        color: #444;
+        margin-bottom: 25px;
+        line-height: 1.5;
+      }
+
+      .photo-container {
+        display: flex;
+        justify-content: center;
+        margin: 20px 0;
+        perspective: 1000px;
+        flex-wrap: wrap;
+        gap: 20px;
+      }
+
+      .photo-frame {
+        width: 200px;
+        height: 200px;
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+        transition: transform 0.5s;
+        cursor: pointer;
+      }
+
+      .photo-frame:hover {
+        transform: rotateY(10deg) scale(1.05);
+      }
+
+      .photo-frame img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+
+      .emoji-container {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 15px;
+        margin: 20px 0;
+      }
+
+      .emoji {
+        font-size: 3rem;
+        cursor: pointer;
+        transition: transform 0.3s;
+        user-select: none;
+      }
+
+      .emoji:hover {
+        transform: scale(1.2);
+      }
+
+      .button-container {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 15px;
+        margin: 30px 0;
+      }
+
+      .surprise-button {
+        padding: 12px 24px;
+        font-size: 1rem;
+        border: none;
+        border-radius: 50px;
+        background: linear-gradient(145deg, #ff6b6b, #ff8e8e);
+        color: white;
+        cursor: pointer;
+        transition: all 0.3s;
+        box-shadow: 0 4px 15px rgba(255, 107, 107, 0.3);
+        width: 100%;
+        max-width: 200px;
+      }
+
+      .surprise-button:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 7px 20px rgba(255, 107, 107, 0.4);
+      }
+
+      .surprise-button:active {
+        transform: translateY(1px);
+      }
+
+      .confetti {
+        position: absolute;
+        width: 10px;
+        height: 10px;
+        background-color: #f0f;
+        opacity: 0.7;
+        top: -10px;
+        z-index: 0;
+      }
+
+      .message-box {
+        background: rgba(255, 255, 255, 0.9);
+        border-radius: 15px;
+        padding: 20px;
+        margin: 20px 0;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        max-width: 90%;
+        display: none;
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        z-index: 1000;
+        text-align: center;
+      }
+
+      .cake-container {
+        position: relative;
+        width: 150px;
+        height: 150px;
+        margin: 20px auto;
+      }
+
+      .cake {
+        width: 100%;
+        height: 100%;
+        background-color: #ffcccc;
+        border-radius: 50%;
+        position: relative;
+        cursor: pointer;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 3rem;
+        transition: transform 0.3s ease;
+      }
+
+      .cake:hover {
+        transform: scale(1.05);
+      }
+
+      .secret-message-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: white;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 2000;
+        display: none;
+      }
+
+      .secret-message-content {
+        text-align: center;
+        padding: 20px;
+        max-width: 90%;
+      }
+
+      .secret-message-content h2 {
+        font-size: 2rem;
+        color: #333;
+        margin-bottom: 15px;
+      }
+
+      .secret-message-content p {
+        font-size: 1.2rem;
+        color: #444;
+        line-height: 1.5;
+      }
+
+      /* Responsive Styles */
+      @media (max-width: 768px) {
+        h1 {
+          font-size: 2rem;
+        }
+
+        p {
+          font-size: 1rem;
+        }
+
+        .emoji {
+          font-size: 2.5rem;
+        }
+
+        .cake-container {
+          width: 120px;
+          height: 120px;
+        }
+
+        .photo-container {
+          flex-direction: column;
+          align-items: center;
+        }
+
+        .photo-frame {
+          width: 150px;
+          height: 150px;
+        }
+
+        .surprise-button {
+          width: 100%;
+          max-width: 100%;
+        }
+      }
+
+      @media (max-width: 480px) {
+        h1 {
+          font-size: 1.8rem;
+        }
+
+        .emoji {
+          font-size: 2rem;
+        }
+
+        .cake-container {
+          width: 100px;
+          height: 100px;
+        }
+
+        .photo-frame {
+          width: 120px;
+          height: 120px;
+        }
+
+        .message-box {
+          padding: 15px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Happy Birthday Laiba! 🎂</h1>
+      <p>
+        Hey there Laiba, my ABSOLUTE FAVORITE person in the world! 👀 Yes, I'm
+        talking to YOU! It's your special day and I couldn't resist creating
+        this little surprise for you!
+      </p>
+
+      <div class="photo-container">
+        <div
+          class="photo-frame"
+          onclick="showMessage('Laiba, you light up every room with your smile! ✨')"
+        >
+          <img src="/Images/2.jpg" alt="Laiba placeholder 1" />
+        </div>
+        <div
+          class="photo-frame"
+          onclick="showMessage('Remember our crazy adventures, Laiba? More to come! 🚀')"
+        >
+          <img src="/Images/2.jpg" alt="Laiba placeholder 2" />
+        </div>
+      </div>
+
+      <div class="emoji-container">
+        <span
+          class="emoji"
+          onclick="showMessage('Happy Birthday Laiba! 🎉 Aaj tum jitna cake khao, utna hi pyara aur meetha tumhara saal ho! Par haan, cake zyada kha liya toh gym ka bhi soch lena! 😜')"
+          >😘</span
+        >
+        <span
+          class="emoji"
+          onclick="showMessage('Umeed hai tumhara har din utna hi zabardast ho jitni tumhari overacting hoti hai! 🎉😂')"
+          >😂</span
+        >
+        <span
+          class="emoji"
+          onclick="showMessage('Duniya mein do cheezain kabhi samajh nahi aayengi… ek physics ke formulas, doosri tumhari baatein!😂sorry mazaq tha🤣')"
+          >🙄</span
+        >
+        <span
+          class="emoji"
+          onclick="showMessage('Janamdin mubarak Laiba! Umeed hai cake mujh se pehle khatam nahi karogi… warna dosti khatam! 🎂😂')"
+          >🥳</span
+        >
+        <span
+          class="emoji"
+          onclick="showMessage('Tumhari birthday par sirf do cheezain gift kar raha hoon… ek virtual hug aur doosra tumhara favorite roast! Happy Birthday, ullu! 🎈😂')"
+          >🤫</span
+        >
+      </div>
+
+      <div class="message-box" id="messageBox">
+        <p id="messageText"></p>
+      </div>
+
+      <div class="cake-container">
+        <div class="cake" onclick="explodeCake()">🎂</div>
+      </div>
+
+      <div class="button-container">
+        <button class="surprise-button" onclick="triggerConfetti()">
+          Click For A Surprise!
+        </button>
+        <button class="surprise-button" onclick="showSecretMessage()">
+          Secret Birthday Message
+        </button>
+        <button class="surprise-button" onclick="startTeasing()">
+          Don't Click This!
+        </button>
+      </div>
+
+      <!-- Secret Message Overlay -->
+      <div class="secret-message-overlay" id="secretMessageOverlay">
+        <div class="secret-message-content">
+          <h2>Happy Birthday Laiba!</h2>
+          <p>
+            Through all our crazy adventures, silly arguments, and amazing
+            memories, you've been the best friend anyone could ever ask for.
+            Laiba, your friendship means the world to me, and I cherish every
+            moment we spend together.
+          </p>
+          <p>Love you tons! ❤</p>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      // Show message when emoji is clicked
+      function showMessage(message) {
+        const messageBox = document.getElementById("messageBox");
+        const messageText = document.getElementById("messageText");
+
+        messageText.textContent = message;
+        messageBox.style.display = "block";
+
+        setTimeout(() => {
+          messageBox.style.display = "none";
+        }, 6000);
+      }
+
+      // Create and animate confetti
+      function triggerConfetti() {
+        const colors = ["#ff6b6b", "#ffb84d", "#4ecdc4", "#a178df", "#ff9a9e"];
+
+        for (let i = 0; i < 100; i++) {
+          createConfetti(colors[Math.floor(Math.random() * colors.length)]);
+        }
+
+        showMessage(
+          "Happy Birthday Laiba! 🎉 May your day be as fantastic and special as you are!"
+        );
+      }
+
+      function createConfetti(color) {
+        const confetti = document.createElement("div");
+        confetti.classList.add("confetti");
+        confetti.style.backgroundColor = color;
+        confetti.style.left = Math.random() * 100 + "vw";
+
+        document.body.appendChild(confetti);
+
+        const size = Math.random() * 10 + 5;
+        confetti.style.width = size + "px";
+        confetti.style.height = size + "px";
+
+        const rotation = Math.random() * 360;
+        confetti.style.transform = `rotate(${rotation}deg)`;
+
+        const duration = Math.random() * 3 + 2;
+        const xMovement = Math.random() * 20 - 10;
+
+        confetti.animate(
+          [
+            {
+              transform: `translate(${xMovement}px, 0) rotate(${rotation}deg)`,
+            },
+            {
+              transform: `translate(${xMovement * 2}px, 100vh) rotate(${
+                rotation + 360
+              }deg)`,
+            },
+          ],
+          {
+            duration: duration * 1000,
+            easing: "ease-in-out",
+          }
+        );
+
+        setTimeout(() => {
+          confetti.remove();
+        }, duration * 1000);
+      }
+
+      // Show secret message
+      function showSecretMessage() {
+        const overlay = document.getElementById("secretMessageOverlay");
+        overlay.style.display = "flex";
+
+        setTimeout(() => {
+          overlay.style.display = "none";
+        }, 10000); // Hide after 3 seconds
+      }
+
+      // Start teasing
+      function startTeasing() {
+        const teasingMessages = [
+          "Hn sunna to ha nahi bilkul bhi!🤦‍♀",
+          "Jis kaam sa mana kia jaye wohi karna hota hana😂",
+          "Chalo ab to click kar hi dia to roast karta thora sa!😜",
+          "To arz kia h bolo irshad🤣",
+          "Duniya se alag hai teri baat, Jaise ghar mein WiFi ho, magar signal sirf gate ke paas! 📡😂💥",
+        ];
+
+        let index = 0;
+
+        function showNextMessage() {
+          if (index < teasingMessages.length) {
+            showMessage(teasingMessages[index]);
+            index++;
+            setTimeout(showNextMessage, 3000); // Show next message after 3 seconds
+          } else {
+            explodeCake(); // Trigger cake explosion after all messages
+          }
+        }
+
+        showNextMessage(); // Start showing messages
+      }
+
+      // Explode cake
+      function explodeCake() {
+        const cake = document.querySelector(".cake");
+
+        // Create explosion effect
+        for (let i = 0; i < 30; i++) {
+          const piece = document.createElement("div");
+          piece.style.position = "absolute";
+          piece.style.width = Math.random() * 20 + 10 + "px";
+          piece.style.height = Math.random() * 20 + 10 + "px";
+          piece.style.backgroundColor = [
+            "#ffcccc",
+            "#ffaaaa",
+            "#ff8888",
+            "#ffffff",
+          ][Math.floor(Math.random() * 4)];
+          piece.style.borderRadius = "50%";
+          piece.style.top = "50%";
+          piece.style.left = "50%";
+
+          document.querySelector(".cake-container").appendChild(piece);
+
+          const angle = Math.random() * Math.PI * 2;
+          const distance = Math.random() * 100 + 50;
+          const duration = Math.random() * 1 + 0.5;
+
+          piece.animate(
+            [
+              { transform: "translate(-50%, -50%) scale(1)" },
+              {
+                transform:
+                  "translate(" +
+                  "calc(-50% + " +
+                  Math.cos(angle) * distance +
+                  "px), " +
+                  "calc(-50% + " +
+                  Math.sin(angle) * distance +
+                  "px)" +
+                  ") scale(0)",
+              },
+            ],
+            {
+              duration: duration * 1000,
+              easing: "ease-out",
+            }
+          );
+
+          setTimeout(() => {
+            piece.remove();
+          }, duration * 1000);
+        }
+
+        cake.textContent = "🎁";
+
+        setTimeout(() => {
+          cake.textContent = "🎂";
+          showMessage(
+            "Surprise Laiba! Virtual cake especially for you ! 🎂✨...real wala bhi khela doga ab free ni hona😂😂😛😘"
+          );
+        }, 2000);
+      }
+
+      // Create random emoji rain occasionally
+      function startRandomEmojiRain() {
+        const emojis = [
+          "🎂",
+          "🎁",
+          "🎈",
+          "🎊",
+          "🎉",
+          "💖",
+          "✨",
+          "💐",
+          "🍰",
+          "🧁",
+        ];
+
+        setInterval(() => {
+          if (Math.random() < 0.3) {
+            const emoji = document.createElement("div");
+            emoji.textContent =
+              emojis[Math.floor(Math.random() * emojis.length)];
+            emoji.style.position = "fixed";
+            emoji.style.top = "-50px";
+            emoji.style.left = Math.random() * 100 + "vw";
+            emoji.style.fontSize = Math.random() * 20 + 20 + "px";
+            emoji.style.zIndex = "0";
+            emoji.style.userSelect = "none";
+            emoji.style.pointerEvents = "none";
+
+            document.body.appendChild(emoji);
+
+            const duration = Math.random() * 5 + 3;
+            const xMovement = Math.random() * 100 - 50;
+
+            emoji.animate(
+              [
+                { transform: "translateY(0) rotate(0deg)" },
+                {
+                  transform:
+                    "translateY(120vh) translateX(" +
+                    xMovement +
+                    "px) rotate(" +
+                    Math.random() * 360 +
+                    "deg)",
+                },
+              ],
+              {
+                duration: duration * 1000,
+                easing: "ease-in",
+              }
+            );
+
+            setTimeout(() => {
+              emoji.remove();
+            }, duration * 1000);
+          }
+        }, 4000);
+      }
+
+      // Start the emoji rain
+      startRandomEmojiRain();
+    </script>
+  </body>
+</html>
